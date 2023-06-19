@@ -6,11 +6,9 @@ import {
 import * as jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import { AppConfig } from 'src/config.schema';
-import { UserRepository } from 'src/users/schema/user.repository';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private userRepository: UserRepository) {}
   async use(req: any, res: any, next: () => void) {
     // check header or url parameters or post parameters for token
     const token = req.headers['Authorization'] || req.headers['authorization'];
@@ -35,12 +33,8 @@ export class AuthMiddleware implements NestMiddleware {
 
     if (usage != 'LOGIN')
       throw new UnauthorizedException('User not Authorized');
-    const user = await this.userRepository.findUser({
-      _id: new Types.ObjectId(sID),
-    });
-    if (!user) throw new UnauthorizedException('User Not found');
 
-    req.user = user;
+    req.decoded = decodedToken;
 
     next();
   }

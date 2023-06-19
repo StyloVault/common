@@ -5,3 +5,6 @@ git submodule add https://github.com/StyloVault/common.git src/common
 
 To Add the subModule when cloning your project
 git clone --recurse-submodules
+
+Update repo using submodules
+git pull --recurse-submodules

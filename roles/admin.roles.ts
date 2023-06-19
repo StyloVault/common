@@ -11,9 +11,9 @@ export class AdminRolesGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const decoded = request.decoded;
 
-    return this.matchRoles(roles, user.adminRole);
+    return this.matchRoles(roles, decoded.adminRole);
   }
 
   matchRoles(roles, userRole) {

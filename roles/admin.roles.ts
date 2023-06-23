@@ -13,10 +13,11 @@ export class AdminRolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const decoded = request.decoded;
 
+    if (!decoded.hasOwnProperty('adminRole')) return false;
     return this.matchRoles(roles, decoded.adminRole);
   }
 
-  matchRoles(roles, userRole) {
-    return roles.indexOf(userRole) >= 0 ? true : false;
+  matchRoles(roles, adminRole) {
+    return roles.indexOf(adminRole) >= 0 ? true : false;
   }
 }

@@ -12,7 +12,7 @@ export class UserRolesGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const decoded = request.decoded;
-
+    if(!decoded || decoded == undefined) return false;
     return this.matchRoles(roles, decoded.userRole);
   }
 

@@ -1,0 +1,29 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "Common functions, methods and classes within microservice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@bugsnag/js": "^7.20.2",
+    "@bugsnag/plugin-express": "^7.19.0",
+    "@hapi/joi": "^17.1.1",
+    "@nestjs/axios": "^3.0.0",
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/mongoose": "^10.0.0",
+    "@nestjs/platform-express": "^9.4.3",
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0"
+  },
+  "author": "Michael Ojo",
+  "license": "MIT"
+}

@@ -19,7 +19,7 @@ export class AxiosInterceptor {
       (config: any) => {
         // Store the request data in MongoDB
         const requestTime = new Date().getTime();
-        config.metadata = { requestTime };
+        config.metadata = { requestTime, apiProviderName: config.apiProviderName };
         return config;
       },
       (error) => {
@@ -32,10 +32,10 @@ export class AxiosInterceptor {
         // Store the response data in MongoDB along with time taken
         const responseTime = new Date().getTime();
         const { config, data, status } = response;
-        const { requestTime } = config.metadata;
+        const { requestTime, apiProviderName } = config.metadata;
         const timeTaken = responseTime - requestTime;
 
-        this.storeRequestAndResponse(config, data, status, timeTaken);
+        this.storeRequestAndResponse(config, data, status, timeTaken, apiProviderName);
 
         return response;
       },
@@ -43,9 +43,10 @@ export class AxiosInterceptor {
         // Store the response error data in MongoDB
         const { config, response } = error;
         const { data, status } = response;
-        const timeTaken = new Date().getTime() - config.metadata.requestTime;
+        const { requestTime, apiProviderName } = config.metadata;
+        const timeTaken = new Date().getTime() - requestTime;
 
-        this.storeRequestAndResponse(config, data, status, timeTaken);
+        this.storeRequestAndResponse(config, data, status, timeTaken, apiProviderName);
 
         return Promise.reject(error);
       },
@@ -63,7 +64,7 @@ export class AxiosInterceptor {
     }
   }
 
-  storeRequestAndResponse(config, responseData, status, timeTaken) {
+  storeRequestAndResponse(config, responseData, status, timeTaken, apiProviderName) {
     const RequestResponseModel = mongoose.model(
       'RequestResponse',
       new mongoose.Schema({
@@ -74,6 +75,7 @@ export class AxiosInterceptor {
         responseData: Object,
         status: Number,
         timeTaken: Number,
+        apiProviderName: String,
         timestamp: { type: Date, default: Date.now },
       }),
     );
@@ -86,6 +88,7 @@ export class AxiosInterceptor {
       responseData,
       status,
       timeTaken,
+      apiProviderName,
     });
 
     requestResponse.save();

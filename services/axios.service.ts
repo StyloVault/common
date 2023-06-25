@@ -95,7 +95,7 @@ export class AxiosInterceptor {
     requestResponse.save();
   }
 
-  async apiCall(payload: {method, data, url, headers, apiProviderName}){
+  async apiCall(payload: {method: string, data: any, url: string, headers: any, apiProviderName}){
     const {method, data, url, headers, apiProviderName} = payload;
     this.apiProviderName = apiProviderName;
     try {

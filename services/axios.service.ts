@@ -8,6 +8,7 @@ dotenv.config();
 @Injectable()
 export class AxiosInterceptor {
   mongoDBUrl: string;
+  apiProviderName;
   constructor() {
     this.mongoDBUrl = process.env.MONGODB_LOGGER_URL;
     this.initializeInterceptor();
@@ -19,7 +20,7 @@ export class AxiosInterceptor {
       (config: any) => {
         // Store the request data in MongoDB
         const requestTime = new Date().getTime();
-        config.metadata = { requestTime, apiProviderName: config.apiProviderName };
+        config.metadata = { requestTime };
         return config;
       },
       (error) => {
@@ -35,7 +36,7 @@ export class AxiosInterceptor {
         const { requestTime, apiProviderName } = config.metadata;
         const timeTaken = responseTime - requestTime;
 
-        this.storeRequestAndResponse(config, data, status, timeTaken, apiProviderName);
+        this.storeRequestAndResponse(config, data, status, timeTaken);
 
         return response;
       },
@@ -43,10 +44,10 @@ export class AxiosInterceptor {
         // Store the response error data in MongoDB
         const { config, response } = error;
         const { data, status } = response;
-        const { requestTime, apiProviderName } = config.metadata;
+        const { requestTime } = config.metadata;
         const timeTaken = new Date().getTime() - requestTime;
 
-        this.storeRequestAndResponse(config, data, status, timeTaken, apiProviderName);
+        this.storeRequestAndResponse(config, data, status, timeTaken);
 
         return Promise.reject(error);
       },
@@ -64,7 +65,7 @@ export class AxiosInterceptor {
     }
   }
 
-  storeRequestAndResponse(config, responseData, status, timeTaken, apiProviderName) {
+  storeRequestAndResponse(config, responseData, status, timeTaken) {
     const RequestResponseModel = mongoose.model(
       'RequestResponse',
       new mongoose.Schema({
@@ -88,9 +89,37 @@ export class AxiosInterceptor {
       responseData,
       status,
       timeTaken,
-      apiProviderName,
+      apiProviderName: this.apiProviderName,
     });
 
     requestResponse.save();
+  }
+
+  async apiCall(payload: {method, data, url, headers, apiProviderName}){
+    const {method, data, url, headers, apiProviderName} = payload;
+    this.apiProviderName = apiProviderName;
+    try {
+      const resp = await axios({
+        method,
+        url,
+        data,
+        headers,
+      });
+      return resp;
+    } catch (error) {
+      if (error.response) {
+        //Successful request but out of range
+        console.log(error);
+        return error.response;
+      } else if (error.request) {
+        //Not reachable Error
+        console.log(error);
+        return false;
+      } else {
+        //Bad Error
+        console.log(error);
+        return false;
+      }
+    }
   }
 }

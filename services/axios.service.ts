@@ -5,6 +5,21 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
+const RequestResponseModel = mongoose.model(
+  'RequestResponse',
+  new mongoose.Schema({
+    url: String,
+    method: String,
+    headers: Object,
+    requestData: Object,
+    responseData: Object,
+    status: Number,
+    timeTaken: Number,
+    apiProviderName: String,
+    timestamp: { type: Date, default: Date.now },
+  }),
+);
+
 @Injectable()
 export class AxiosInterceptor {
   mongoDBUrl: string;
@@ -42,6 +57,7 @@ export class AxiosInterceptor {
       },
       (error) => {
         // Store the response error data in MongoDB
+        console.log(error);
         const { config, response } = error;
         const { data, status } = response;
         const { requestTime } = config.metadata;
@@ -66,20 +82,7 @@ export class AxiosInterceptor {
   }
 
   storeRequestAndResponse(config, responseData, status, timeTaken) {
-    const RequestResponseModel = mongoose.model(
-      'RequestResponse',
-      new mongoose.Schema({
-        url: String,
-        method: String,
-        headers: Object,
-        requestData: Object,
-        responseData: Object,
-        status: Number,
-        timeTaken: Number,
-        apiProviderName: String,
-        timestamp: { type: Date, default: Date.now },
-      }),
-    );
+    
 
     const requestResponse = new RequestResponseModel({
       url: config.url,
@@ -95,7 +98,7 @@ export class AxiosInterceptor {
     requestResponse.save();
   }
 
-  async apiCall(payload: {method: string, data: any, url: string, headers: any, apiProviderName}){
+  async apiCall(payload: {method: string, data?: any, url: string, headers: any, apiProviderName}){
     const {method, data, url, headers, apiProviderName} = payload;
     this.apiProviderName = apiProviderName;
     try {

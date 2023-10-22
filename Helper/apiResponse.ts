@@ -1,5 +1,6 @@
-import { ApiResponseEnum } from './../enums/ApiResponse'; // Import your ApiResponseEnum
-
+import { Injectable } from '@nestjs/common';
+import { ApiResponseEnum } from './../enums/ApiResponse';
+@Injectable()
 export class ApiResponse {
    success(message: string = '', data: any[] = [], code: number = 200): any {
     const response = {

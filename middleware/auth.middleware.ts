@@ -30,7 +30,9 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Token not valid for resource');
     console.log('Decoded Token',decodedToken);
     const { sID, membershipId, userRole, adminRole, usage } = decodedToken;
-
+    if(usage == 'TRANSPORT') {
+      throw new UnauthorizedException('Transport')
+    }
     if (usage != 'LOGIN')
       throw new UnauthorizedException('User not Authorized');
 

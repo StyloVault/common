@@ -1,4 +1,4 @@
-import { RequestType } from "enums/RequestType";
+import { RequestType } from "./../enums/RequestType";
 
 export class RequestObject {
     

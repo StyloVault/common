@@ -3,7 +3,7 @@ import { RequestType } from "./../enums/RequestType";
 export class RequestObject {
     
     userId: string;
-    body :  any[];
+    body :  any;
     userRole : string;
     url : string;
     method : RequestType

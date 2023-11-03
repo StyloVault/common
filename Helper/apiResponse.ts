@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import {Response} from 'express';
 import { ApiResponseEnum } from './../enums/ApiResponse';
 @Injectable()
 export class ApiResponse {
-   success(message: string = '', data: any = [], code: number = 200): any {
+   success(res: Response, message: string = '', data: any = [], code: number = 200): any {
     const response = {
       code: code,
       status: ApiResponseEnum.StatusSuccess,
@@ -12,10 +13,11 @@ export class ApiResponse {
       },
     };
 
-    return response;
+   
+    return res.status(code).json(response);
   }
 
-   failure(message: string = '', data: any = [], code: number = 400): any {
+   failure(res : Response, message: string = '', data: any = [], code: number = 400): any {
     const response = {
       code: code,
       status: ApiResponseEnum.StatusFailed,
@@ -24,14 +26,14 @@ export class ApiResponse {
         data: data,
       },
     };
-
-    return response;
+console.log(code)
+    return res.status(code).json(response);
   }
 
-   exceptionResponse(exception: any): any {
+   exceptionResponse(res: Response, exception: any): any {
     console.log(exception.message);
 
-    return {
+   const response =  {
       status: ApiResponseEnum.StatusFailed,
       message: 'An unexpected error was encountered. Please contact the Admin.',
       result: {
@@ -39,5 +41,6 @@ export class ApiResponse {
       },
       error: exception.message,
     };
+    return res.status(500).json(response);
   }
 }

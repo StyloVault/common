@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import {Response} from 'express';
+import { Injectable, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiResponseEnum } from './../enums/ApiResponse';
 @Injectable()
 export class ApiResponse {
@@ -13,7 +13,6 @@ export class ApiResponse {
       },
     };
 
-   
     return res.status(code).json(response);
   }
 
@@ -26,7 +25,7 @@ export class ApiResponse {
         data: data,
       },
     };
-console.log(code)
+
     return res.status(code).json(response);
   }
 

@@ -8,7 +8,7 @@ export class RequestObject {
     url : string;
     method : RequestType
   
-    constructor(userId: string, body : any[], userRole : string, url: string, method : RequestType) {
+    constructor(userId: string, body : any, userRole : string, url: string, method : RequestType) {
       this.userId = userId;
       this.body = body;
       this.userRole = userRole
@@ -16,7 +16,7 @@ export class RequestObject {
       this.method = method
     }
 
-    static from(userId: string, body: any[], userRole : string, url : string, method : RequestType) : RequestObject {
+    static from(userId: string, body: any, userRole : string, url : string, method : RequestType) : RequestObject {
         return new RequestObject(userId, body, userRole, url, method );
       }
   }

@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { AppConfig } from './../../config.schema';
 import { RequestObject } from './RequestObject';
-import { AxiosInterceptor } from 'services/axios.service';
+import { AxiosInterceptor } from '../services/axios.service';
 
 @Injectable()
 export class ApiCall {

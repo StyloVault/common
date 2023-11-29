@@ -7,13 +7,16 @@ export class PermissionsGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const requiredPermissions = this.reflector.get<string[]>('permissions', context.getHandler());
-
     if (!requiredPermissions) {
       return true; // No specific permissions required
     }
 
-    const { user } = context.switchToHttp().getRequest();
-
-    return user.permissions.some(permission => requiredPermissions.includes(permission));
+    const { decoded } = context.switchToHttp().getRequest();
+    //If user is owner return true
+    if(['User', 'Company'].includes(decoded.userRole)){
+        return true;
+    }
+    //Check if user have permission to the role
+    return decoded.permissions.some(permission => requiredPermissions.includes(permission));
   }
 }

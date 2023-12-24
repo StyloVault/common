@@ -17,7 +17,7 @@ export class PermissionsGuard implements CanActivate {
     if(['User', 'Company', 'Supervisor'].includes(decoded.userRole)){
       return true;
   }
-    //Check if user have permission to the role
-    return decoded.permissions.some(permission => requiredPermissions.includes(permission));
+   //Check if user have permission to the role
+   return JSON.parse(decoded.permissions).some(permission => requiredPermissions.includes(permission))
   }
 }

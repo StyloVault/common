@@ -1,4 +1,3 @@
-import { SetMetadata } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
-export const Permissions = (...permissions: string[]) => SetMetadata('permissions', permissions);
-
+export const Permissions = Reflector.createDecorator<string[]>();

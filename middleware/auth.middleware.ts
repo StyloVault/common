@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
-import { AppConfig } from 'src/config.schema';
+import { AppConfig } from './../../config.schema';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {

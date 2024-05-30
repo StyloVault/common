@@ -1,8 +1,5 @@
 export const sudoOtpEmailTemplate = (templateData) => {
     const html = `
-  
-  
-  
   <!DOCTYPE html>
   <html lang="eng">
   ​

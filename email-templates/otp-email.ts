@@ -1,5 +1,5 @@
-export const sudoOtpEmailTemplate = (templateData) => {
-    const html = `
+export const OtpEmailTemplate = (templateData) => {
+  const html = `
   <!DOCTYPE html>
   <html lang="eng">
   ​
@@ -143,7 +143,7 @@ export const sudoOtpEmailTemplate = (templateData) => {
                           </tr>
                           <tr>
                               <td style="text-align:center;color: #999999;font-weight: normal;font-size: 11px;padding-bottom: 5px;">
-                              © ${ new Date().getFullYear() } Crop Xchange Africa.
+                              © ${new Date().getFullYear()} Crop Xchange Africa.
                               </td>
                           </tr>
                       </table>
@@ -155,6 +155,5 @@ export const sudoOtpEmailTemplate = (templateData) => {
   </body>
   </html>
     `;
-    return html;
-  };
-  
+  return html;
+};

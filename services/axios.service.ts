@@ -82,8 +82,6 @@ export class AxiosInterceptor {
   }
 
   storeRequestAndResponse(config, responseData, status, timeTaken) {
-    
-
     const requestResponse = new RequestResponseModel({
       url: config.url,
       method: config.method,
@@ -98,8 +96,14 @@ export class AxiosInterceptor {
     requestResponse.save();
   }
 
-  async apiCall(payload: {method: string, data?: any, url: string, headers: any, apiProviderName}){
-    const {method, data, url, headers, apiProviderName} = payload;
+  async apiCall(payload: {
+    method: string;
+    data?: any;
+    url: string;
+    headers: any;
+    apiProviderName;
+  }) {
+    const { method, data, url, headers, apiProviderName } = payload;
     this.apiProviderName = apiProviderName;
     try {
       const resp = await axios({
